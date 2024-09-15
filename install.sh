@@ -15,9 +15,17 @@ echo "||_| \_|\___/|____/|_____|____/                 |"
 echo "'-----------------------------------------------'"
 
 echo "ДЕЛАЕМ КРАСОТУ УСТАНАВЛИВАЕМ КРАСОТУ"
+
 # Create and navigate to the Soneium directory
 mkdir -p Soneium
-cd Soneium
+
+# Check if directory creation was successful
+if cd Soneium; then
+    echo "Перешли в директорию Soneium: $(pwd)"
+else
+    echo "Не удалось перейти в директорию Soneium. Прекращение выполнения."
+    exit 1
+fi
 
 # Generate jwt.txt
 openssl rand -hex 32 > jwt.txt
@@ -31,6 +39,7 @@ declare -A files=(
 )
 
 for file in "${!files[@]}"; do
+    echo "Скачиваем файл: ${file}"
     wget -q "${files[$file]}" -O "${file}"
 done
 
@@ -44,3 +53,4 @@ cp minato-genesis.json org-file/org-minato-genesis.json
 cp docker-compose.yml org-file/org-docker-compose.yml
 cp minato-rollup.json org-file/org-minato-rollup.json
 
+echo "Установка завершена в директории: $(pwd)"
